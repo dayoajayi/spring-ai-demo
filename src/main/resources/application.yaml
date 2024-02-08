@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vector_store
+    username: postgres
+    password: postgres
+  ai:
+    openai.api-key: ${OPEN_AI_KEY}
