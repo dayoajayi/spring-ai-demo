@@ -32,7 +32,7 @@ public class PoetryController {
     }
 
     @GetMapping("/cathaiku")
-    public ResponseEntity<Completion> generateHaiku(){
+    public ResponseEntity<Completion> generateHaiku() {
         return ResponseEntity.ok(poetryService.getCatHaiku());
     }
 
@@ -42,10 +42,10 @@ public class PoetryController {
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
-    @GetMapping("/load")
+    @PostMapping("/load")
     public ResponseEntity<String> load() {
         try {
-            this.dataLoadingService.load();
+            dataLoadingService.load();
             return ResponseEntity.ok("file uploaded successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -53,10 +53,23 @@ public class PoetryController {
         }
     }
 
+    @PostMapping("/load/document")
+    public ResponseEntity<String> loadDocument(@RequestBody String document) {
+        try {
+            dataLoadingService.loadDocument(document);
+            return ResponseEntity.ok("document uploaded successfuly");
+        } catch (
+                Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while loading data: " + e.getMessage());
+        }
+
+    }
+
     @GetMapping("/qa")
     public Map answerQuestion(@RequestParam(value = "question", defaultValue =  "is Earth flat?") String question,
                               @RequestParam(value = "stuffit", defaultValue = "true") boolean stuffit) {
-        String answer = this.questionService.generate(question, stuffit);
+        String answer = questionService.generate(question, stuffit);
         Map map = new LinkedHashMap();
         map.put("question", question);
         map.put("answer", answer);

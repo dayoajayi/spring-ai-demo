@@ -2,6 +2,7 @@ package com.example.springaidemo.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.ExtractedTextFormatter;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
@@ -10,6 +11,8 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DataLoadingService {
@@ -42,4 +45,10 @@ public class DataLoadingService {
                        pdfReader.get()));
        logger.info("Done parsing document, splitting, creating embeddings and storing in vector store");
    }
+
+    public void loadDocument(String document) {
+        logger.info("loading in document of ", document);
+        vectorStore.add(List.of(new Document(document)));
+        logger.info("Document is successfully loaded");
+    }
 }

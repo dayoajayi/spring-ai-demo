@@ -55,6 +55,4 @@ public class QuestionService {
             return new SystemPromptTemplate("answering without document").createMessage();
         }
     }
-
-
 }
