@@ -9,6 +9,7 @@ import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,9 @@ public class QuestionService {
     private Message getSystemMessage(String message, boolean stuffit) {
         if (stuffit) {
             logger.info("Retrieving relevant documents");
-            List<Document> similarDocuments = vectorStore.similaritySearch(message);
+            SearchRequest searchRequest = SearchRequest.query(message);
+            searchRequest.withTopK(10);
+            List<Document> similarDocuments = vectorStore.similaritySearch(searchRequest);
             logger.info(String.format("Found %s relevant documents.", similarDocuments.size()));
             String documents = similarDocuments.stream().map(entry -> entry.getContent()).collect(Collectors.joining("\n"));
             SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate("answering from document");
