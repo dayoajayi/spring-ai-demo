@@ -19,8 +19,8 @@ public class Config {
     @Bean
     public SearchRequest searchRequest() {
         SearchRequest searchRequest = SearchRequest.defaults();
-        searchRequest.withTopK(6);
-        searchRequest.withSimilarityThreshold(0.5);
+        searchRequest.withTopK(4);
+        searchRequest.withSimilarityThreshold(0.75);
         return searchRequest;
     }
 }

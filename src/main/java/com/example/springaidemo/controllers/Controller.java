@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("ai")
-public class PoetryController {
+public class Controller {
     private final PoetryService poetryService;
     private final JdbcTemplate jdbcTemplate;
 
@@ -22,9 +22,9 @@ public class PoetryController {
 
     private final DataLoadingService dataLoadingService;
 
-    public PoetryController(PoetryService poetryService, JdbcTemplate jdbcTemplate,
-                            DataLoadingService dataLoadingService,
-                            QuestionService questionService) {
+    public Controller(PoetryService poetryService, JdbcTemplate jdbcTemplate,
+                      DataLoadingService dataLoadingService,
+                      QuestionService questionService) {
         this.poetryService = poetryService;
         this.jdbcTemplate = jdbcTemplate;
         this.dataLoadingService = dataLoadingService;
@@ -32,7 +32,7 @@ public class PoetryController {
     }
 
     @GetMapping("/cathaiku")
-    public ResponseEntity<Completion> generateHaiku() {
+    public ResponseEntity<String> generateHaiku() {
         return ResponseEntity.ok(poetryService.getCatHaiku());
     }
 
@@ -63,7 +63,6 @@ public class PoetryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while loading data: " + e.getMessage());
         }
-
     }
 
     @GetMapping("/qa")

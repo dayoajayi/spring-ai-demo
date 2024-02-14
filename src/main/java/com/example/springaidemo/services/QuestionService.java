@@ -13,7 +13,6 @@ import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,7 +41,7 @@ public class QuestionService {
         logger.info("Asking AI model to reply to question.");
         ChatResponse aiResponse = chatClient.call(prompt);
         logger.info("AI responded.");
-        return aiResponse.getResult().toString();
+        return aiResponse.getResult().getOutput().getContent();
     }
 
     private Message getSystemMessage(String message, boolean stuffit) {
