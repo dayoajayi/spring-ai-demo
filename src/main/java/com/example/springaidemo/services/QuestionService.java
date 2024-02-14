@@ -26,9 +26,12 @@ public class QuestionService {
 
     private final VectorStore vectorStore;
 
-    public QuestionService(ChatClient chatClient, VectorStore vectorStore) {
+    private final SearchRequest searchRequest;
+
+    public QuestionService(ChatClient chatClient, VectorStore vectorStore, SearchRequest searchRequest) {
         this.chatClient = chatClient;
         this.vectorStore = vectorStore;
+        this.searchRequest = searchRequest;
     }
 
     public String generate(String message, boolean stuffit){
@@ -45,8 +48,7 @@ public class QuestionService {
     private Message getSystemMessage(String message, boolean stuffit) {
         if (stuffit) {
             logger.info("Retrieving relevant documents");
-            SearchRequest searchRequest = SearchRequest.query(message);
-            searchRequest.withTopK(10);
+            searchRequest.withQuery(message);
             List<Document> similarDocuments = vectorStore.similaritySearch(searchRequest);
             logger.info(String.format("Found %s relevant documents.", similarDocuments.size()));
             String documents = similarDocuments.stream().map(entry -> entry.getContent()).collect(Collectors.joining("\n"));
