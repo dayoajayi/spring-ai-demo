@@ -4,4 +4,10 @@ spring:
     username: postgres
     password: postgres
   ai:
-    openai.api-key: ${OPEN_AI_KEY}
+    openai:
+      temperature: 0.3
+      api-key: ${OPEN_AI_KEY}
+      model: gpt-3.5-turbo
+      embedding-base-url: https://api.openai.com
+      embedding-api-key: ${OPEN_AI_KEY}
+      embedding-model: text-embedding-ada-002

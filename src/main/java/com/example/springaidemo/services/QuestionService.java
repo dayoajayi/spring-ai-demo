@@ -11,6 +11,8 @@ import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,9 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionService {
     private static final Logger logger = LoggerFactory.getLogger(QuestionService.class);
+
+    @Value("classpath:/prompts/system-qa.st")
+    private Resource qaSystemPromptResource;
 
     private final ChatClient chatClient;
 
@@ -51,7 +56,7 @@ public class QuestionService {
             List<Document> similarDocuments = vectorStore.similaritySearch(searchRequest);
             logger.info(String.format("Found %s relevant documents.", similarDocuments.size()));
             String documents = similarDocuments.stream().map(entry -> entry.getContent()).collect(Collectors.joining("\n"));
-            SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate("answering from document");
+            SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(this.qaSystemPromptResource);
             Message  messageResult = systemPromptTemplate.createMessage(Map.of("documents", documents));
             return messageResult;
         } else {
