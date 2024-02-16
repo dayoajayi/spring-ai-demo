@@ -61,7 +61,8 @@ public class QuestionService {
             return messageResult;
         } else {
             logger.info("Not stuffing the prompt, using generic prompt");
-            return new SystemPromptTemplate("answering without document").createMessage();
+            return new SystemPromptTemplate("You're assisting with questions\n" +
+                    "If unsure, simply state that you don't know.").createMessage();
         }
     }
 }
