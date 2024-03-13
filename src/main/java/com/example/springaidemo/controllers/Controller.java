@@ -3,7 +3,6 @@ package com.example.springaidemo.controllers;
 import com.example.springaidemo.services.DataLoadingService;
 import com.example.springaidemo.services.PoetryService;
 import com.example.springaidemo.services.QuestionService;
-import com.example.springaidemo.simple.Completion;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -63,6 +62,12 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while loading data: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/load/json")
+    public ResponseEntity<String> loadJson(){
+        dataLoadingService.loadJson();
+        return ResponseEntity.ok("done");
     }
 
     @GetMapping("/qa")

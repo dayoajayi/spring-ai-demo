@@ -53,6 +53,7 @@ public class QuestionService {
         if (stuffit) {
             logger.info("Retrieving relevant documents");
             searchRequest.withQuery(message);
+//            searchRequest.withFilterExpression(new FilterExpressionBuilder().eq("filename", "IL_medicaid").build());
             List<Document> similarDocuments = vectorStore.similaritySearch(searchRequest);
             logger.info(String.format("Found %s relevant documents.", similarDocuments.size()));
             String documents = similarDocuments.stream().map(entry -> entry.getContent()).collect(Collectors.joining("\n"));

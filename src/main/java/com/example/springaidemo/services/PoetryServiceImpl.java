@@ -18,7 +18,6 @@ public class PoetryServiceImpl implements PoetryService {
     }
     @Override
     public String getCatHaiku() {
-        chatClient.call(WRITE_ME_HAIKU_ABOUT_CAT);
         return chatClient.call(WRITE_ME_HAIKU_ABOUT_CAT);
     }
 
