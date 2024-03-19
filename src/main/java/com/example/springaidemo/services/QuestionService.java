@@ -11,6 +11,7 @@ import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class QuestionService {
         if (stuffit) {
             logger.info("Retrieving relevant documents");
             searchRequest.withQuery(message);
-//            searchRequest.withFilterExpression(new FilterExpressionBuilder().eq("filename", "IL_medicaid").build());
+            searchRequest.withFilterExpression(new FilterExpressionBuilder().eq("filename", "IL_medicaid").build());
             List<Document> similarDocuments = vectorStore.similaritySearch(searchRequest);
             logger.info(String.format("Found %s relevant documents.", similarDocuments.size()));
             String documents = similarDocuments.stream().map(entry -> entry.getContent()).collect(Collectors.joining("\n"));
